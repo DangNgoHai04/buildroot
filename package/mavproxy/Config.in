@@ -1,0 +1,10 @@
+config BR2_PACKAGE_MAVPROXY
+	bool "Mavproxy"
+	select BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYMAVLINK
+	select BR2_PACKAGE_PYTHON_NUMPY
+	select BR2_PACKAGE_PYTHON_SERIAL
+	help
+	  This is a MAVLink ground station written in python.
+
+	  https://ardupilot.org/mavproxy/index.html

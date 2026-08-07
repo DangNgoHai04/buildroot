@@ -1,0 +1,12 @@
+--- a/setserial.c	2025-04-24 19:56:45.225059211 +0000
++++ b/setserial.c	2025-04-24 20:19:26.923908807 +0000
+@@ -11,7 +11,9 @@
+  */
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <fcntl.h>
++#include <unistd.h>
+ #include <termios.h>
+ #include <string.h>
+ #include <errno.h>

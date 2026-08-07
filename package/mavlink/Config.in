@@ -1,0 +1,10 @@
+config BR2_PACKAGE_MAVLINK
+	bool "mavlink"
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_FUTURE
+	select BR2_PACKAGE_PYTHON_LXML
+	help
+	  MAVLink micro air vehicle marshalling / communication library.
+
+	  https://mavlink.io/

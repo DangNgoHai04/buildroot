@@ -1,0 +1,56 @@
+From 99b93e66e7ad1b422004e8c0079416c0c74d678d Mon Sep 17 00:00:00 2001
+From: scpcom <scpcom@gmx.de>
+Date: Sun, 5 Oct 2025 19:23:17 +0200
+Subject: [PATCH] server: do not mount disk in cdrom mode
+
+---
+ server/service/storage/image.go            |  3 +++
+ web/src/pages/desktop/menu/image/index.tsx | 13 +++++++++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/server/service/storage/image.go b/server/service/storage/image.go
+index 63360ed..c1a54d2 100644
+--- a/server/service/storage/image.go
++++ b/server/service/storage/image.go
+@@ -96,6 +96,9 @@ func (s *Service) MountImage(c *gin.Context) {
+ 	if image == "" {
+ 		image = imageNone
+ 	}
++	if image == imageNone && req.Cdrom {
++		image = "\n"
++	}
+ 
+ 	if err := os.WriteFile(mountDevice, []byte(image), 0o666); err != nil {
+ 		log.Errorf("mount file %s failed: %s", image, err)
+diff --git a/web/src/pages/desktop/menu/image/index.tsx b/web/src/pages/desktop/menu/image/index.tsx
+index ae0f499..584583a 100644
+--- a/web/src/pages/desktop/menu/image/index.tsx
++++ b/web/src/pages/desktop/menu/image/index.tsx
+@@ -31,6 +31,15 @@ export const Image = () => {
+     setSubmenuOpenCount((count) => (open ? count + 1 : Math.max(0, count - 1)));
+   }
+ 
++  function changeMode(mode: string) {
++    setMode(mode);
++    api.getMountedImage().then((rsp) => {
++      if (rsp.code === 0) {
++        api.mountImage(rsp.data?.file, mode === 'cd-rom');
++      }
++    });
++  }
++
+   return (
+     <>
+       <Tooltip title={t('image.title')} placement="bottom" mouseEnterDelay={0.6}>
+@@ -47,7 +56,7 @@ export const Image = () => {
+         <div className="flex flex-col space-y-6">
+           <div className="flex items-center justify-between">
+             <span>{t('image.mountMode')}</span>
+-            <Segmented value={mode} options={modes} disabled={isMounted} onChange={setMode} />
++            <Segmented value={mode} options={modes} disabled={isMounted} onChange={changeMode} />
+           </div>
+ 
+           <Divider style={{ margin: '24px 0 0 0' }} />
+-- 
+2.34.1
+

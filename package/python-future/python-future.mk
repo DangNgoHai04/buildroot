@@ -13,3 +13,4 @@ PYTHON_FUTURE_LICENSE_FILES = LICENSE.txt
 PYTHON_FUTURE_CPE_ID_VENDOR = pythoncharmers
 
 $(eval $(python-package))
+$(eval $(host-python-package))
